@@ -1,45 +1,29 @@
+"""
+Background capture and display using modular classes
+"""
+
 import cv2
-import numpy as np
-from logger import logger
-
-def capture_background(video_source=0, num_frames=100):
-    cap = cv2.VideoCapture(video_source)
-
-    frames = []
-    frame_count = 0
-
-    logger.info("Capturing frames to build background model")
-
-    while frame_count < num_frames:
-        ret, frame = cap.read()
-        if not ret:
-            break
-
-        frame = cv2.resize(frame, (640, 480))
-        frames.append(frame)
-        frame_count += 1
-
-        cv2.imshow('Capturing Frames', frame)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-    logger.info("Calculating median background")
-
-    # Convert list of frames to numpy array and compute median
-    frames_np = np.array(frames)
-    median_frame = np.median(frames_np, axis=0).astype(dtype=np.uint8)
-
-    return median_frame
+from background_model import create_background_model
+from config.config import NUM_BACKGROUND_FRAMES, VIDEO_SOURCE, BACKGROUND_METHOD
 
 
 def show_background(background):
+    """Display the computed background image"""
     cv2.imshow('Estimated Background', background)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+
 if __name__ == "__main__":
-    background = capture_background(video_source=0, num_frames=200)
+    # Create background model using specified method
+    bg_model = create_background_model(
+        method=BACKGROUND_METHOD,
+        video_source=VIDEO_SOURCE,
+        num_frames=NUM_BACKGROUND_FRAMES
+    )
+
+    # Build and get background
+    background = bg_model.get_background()
+
+    # Display background
     show_background(background)
