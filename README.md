@@ -25,12 +25,38 @@ pip install -r requirements.txt
 
 ## Usage
 
-### Basic Usage
+### Command Line Interface (Recommended)
+
+The application provides a comprehensive CLI with multiple commands:
+
+```bash
+# Capture and display background model
+python src/cli.py background
+
+# Run motion detection with live camera
+python src/cli.py detect
+
+# Process a video file
+python src/cli.py detect --video path/to/video.mp4
+
+# Get information about a video file
+python src/cli.py info --video path/to/video.mp4
+
+# List available cameras
+python src/cli.py cameras
+
+# Show help
+python src/cli.py --help
+```
+
+### Direct Script Execution
+
+#### Background Capture
 ```bash
 python src/main.py
 ```
 
-### Motion Detection
+#### Motion Detection
 ```bash
 python src/motion_detection.py
 ```
