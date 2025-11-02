@@ -50,6 +50,11 @@ python src/cli.py info --video path/to/video.mp4
 # List available cameras
 python src/cli.py cameras
 
+# Show motion detection alerts and statistics
+python src/cli.py alerts                    # Show recent alerts
+python src/cli.py alerts --export data.json # Export alerts to JSON
+python src/cli.py stats                     # Show detection statistics
+
 # Show help
 python src/cli.py --help
 ```

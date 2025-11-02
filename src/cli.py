@@ -7,6 +7,7 @@ import sys
 from background_model import create_background_model
 from motion_detector import ContourMotionDetector
 from video_processor import get_video_info, list_available_cameras
+from alert_system import alert_system
 from config.config import (
     NUM_BACKGROUND_FRAMES, VIDEO_SOURCE, BACKGROUND_METHOD,
     FRAME_WIDTH, FRAME_HEIGHT
@@ -58,6 +59,15 @@ Examples:
 
     # Cameras command
     cameras_parser = subparsers.add_parser('cameras', help='List available cameras')
+
+    # Alerts command
+    alerts_parser = subparsers.add_parser('alerts', help='Show motion detection alerts')
+    alerts_parser.add_argument('--export', type=str, help='Export alerts to JSON file')
+    alerts_parser.add_argument('--hours', type=int, default=24,
+                              help='Show alerts from last N hours (default: 24)')
+
+    # Stats command
+    stats_parser = subparsers.add_parser('stats', help='Show motion detection statistics')
 
     return parser
 
@@ -159,6 +169,62 @@ def handle_cameras_command(args):
         sys.exit(1)
 
 
+def handle_alerts_command(args):
+    """Handle alerts command"""
+    try:
+        # Get recent events
+        recent_events = alert_system.get_recent_events(args.hours)
+
+        if not recent_events:
+            print(f"No motion events detected in the last {args.hours} hours.")
+            return
+
+        print(f"Motion Detection Events (last {args.hours} hours):")
+        print("-" * 60)
+
+        for event in recent_events:
+            print(f"Time: {event.datetime}")
+            print(f"Objects detected: {event.object_count}")
+            print(f"Confidence: {event.confidence:.2f}")
+            if event.bounding_boxes:
+                print(f"Bounding boxes: {len(event.bounding_boxes)}")
+            print("-" * 30)
+
+        # Export if requested
+        if args.export:
+            filename = alert_system.export_events_json(args.export)
+            if filename:
+                print(f"\nEvents exported to: {filename}")
+
+    except Exception as e:
+        logger.error(f"Failed to show alerts: {e}")
+        sys.exit(1)
+
+
+def handle_stats_command(args):
+    """Handle stats command"""
+    try:
+        stats = alert_system.get_statistics()
+
+        print("Motion Detection Statistics:")
+        print("-" * 40)
+        print(f"Total events: {stats['total_events']}")
+        print(f"Total objects detected: {stats['total_objects_detected']}")
+
+        if stats['total_events'] > 0:
+            print(f"Average objects per event: {stats['average_objects_per_event']:.1f}")
+            print(f"Events per hour: {stats['events_per_hour']:.2f}")
+
+        if stats['first_event']:
+            print(f"First event: {stats['first_event']}")
+        if stats['last_event']:
+            print(f"Last event: {stats['last_event']}")
+
+    except Exception as e:
+        logger.error(f"Failed to show statistics: {e}")
+        sys.exit(1)
+
+
 def main():
     """Main CLI entry point"""
     parser = create_parser()
@@ -173,7 +239,9 @@ def main():
         'background': handle_background_command,
         'detect': handle_detect_command,
         'info': handle_info_command,
-        'cameras': handle_cameras_command
+        'cameras': handle_cameras_command,
+        'alerts': handle_alerts_command,
+        'stats': handle_stats_command
     }
 
     handler = handlers.get(args.command)

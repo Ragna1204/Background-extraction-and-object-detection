@@ -10,6 +10,7 @@ from config.config import (
     FRAME_WIDTH, FRAME_HEIGHT, MOTION_THRESHOLD,
     BLUR_SIZE, MIN_CONTOUR_AREA, SHOW_PREVIEW
 )
+from alert_system import alert_system
 
 
 class MotionDetector:
@@ -153,6 +154,21 @@ class ContourMotionDetector(MotionDetector):
         """Display results with bounding boxes"""
         # Detect contours
         contours = self.detect_contours(mask)
+
+        # Trigger alert if motion detected
+        if len(contours) > 0:
+            # Create bounding boxes data
+            bounding_boxes = []
+            for contour in contours:
+                x, y, w, h = cv2.boundingRect(contour)
+                bounding_boxes.append({'x': x, 'y': y, 'width': w, 'height': h})
+
+            # Trigger alert
+            alert_system.on_motion_detected(
+                object_count=len(contours),
+                confidence=0.8,  # Simple confidence based on contour count
+                bounding_boxes=bounding_boxes
+            )
 
         # Draw bounding boxes on original frame
         frame_with_boxes = self.draw_bounding_boxes(original_frame, contours)
