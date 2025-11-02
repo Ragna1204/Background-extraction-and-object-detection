@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from logger import logger
 
 def capture_background(video_source=0, num_frames=100):
     cap = cv2.VideoCapture(video_source)
@@ -7,7 +8,7 @@ def capture_background(video_source=0, num_frames=100):
     frames = []
     frame_count = 0
 
-    print("Capturing frames to build background model")
+    logger.info("Capturing frames to build background model")
 
     while frame_count < num_frames:
         ret, frame = cap.read()
@@ -25,7 +26,7 @@ def capture_background(video_source=0, num_frames=100):
     cap.release()
     cv2.destroyAllWindows()
 
-    print("Calculating median background")
+    logger.info("Calculating median background")
 
     # Convert list of frames to numpy array and compute median
     frames_np = np.array(frames)

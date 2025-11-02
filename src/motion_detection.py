@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from logger import logger
 
 def capture_background(video_source=0, num_frames=100):
     cap = cv2.VideoCapture(video_source)
@@ -7,7 +8,7 @@ def capture_background(video_source=0, num_frames=100):
     frames = []
     frame_count = 0
 
-    print("Capturing frames to build background model...")
+    logger.info("Capturing frames to build background model...")
 
     while frame_count < num_frames:
         ret, frame = cap.read()
@@ -25,7 +26,7 @@ def capture_background(video_source=0, num_frames=100):
     cap.release()
     cv2.destroyAllWindows()
 
-    print("Calculating median background...")
+    logger.info("Calculating median background...")
 
     frames_np = np.array(frames)
     median_frame = np.median(frames_np, axis=0).astype(np.uint8)
@@ -40,11 +41,11 @@ def subtract_background_and_show(background_image, video_source=0):
 
     # 🆕 Display the background before starting
     cv2.imshow('Estimated Background (Before Detection)', background_image)
-    print("Showing estimated background. Press any key to continue to foreground detection...")
+    logger.info("Showing estimated background. Press any key to continue to foreground detection...")
     cv2.waitKey(0)
     cv2.destroyWindow('Estimated Background (Before Detection)')
 
-    print("[INFO] Starting real-time foreground detection... Press 'q' to quit.")
+    logger.info("Starting real-time foreground detection... Press 'q' to quit.")
 
     while True:
         ret, frame = cap.read()
