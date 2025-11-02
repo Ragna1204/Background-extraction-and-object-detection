@@ -23,6 +23,11 @@ cd Background-extraction-and-object-detection
 pip install -r requirements.txt
 ```
 
+3. (Optional) For development, install additional testing dependencies:
+```bash
+pip install -r requirements.txt --upgrade
+```
+
 ## Usage
 
 ### Command Line Interface (Recommended)
@@ -73,6 +78,24 @@ python src/motion_detection.py
 ├── docs/                  # Documentation
 ├── requirements.txt       # Python dependencies
 └── README.md             # This file
+```
+
+## Testing
+
+Run the test suite using pytest:
+
+```bash
+# Run all tests
+python run_tests.py
+
+# Or directly with pytest
+pytest
+
+# Run specific test file
+python run_tests.py test_background_model.py
+
+# Run with coverage
+pytest --cov=src --cov-report=html
 ```
 
 ## Configuration
