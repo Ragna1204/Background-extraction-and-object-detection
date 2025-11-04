@@ -4,6 +4,11 @@ Video processing utilities for input/output operations
 
 import cv2
 import os
+import sys
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from logger import logger
 from config.config import FRAME_WIDTH, FRAME_HEIGHT, FPS, OUTPUT_VIDEO_PATH
 

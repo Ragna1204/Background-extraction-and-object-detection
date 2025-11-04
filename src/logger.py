@@ -4,6 +4,11 @@ Logging configuration for the motion detection application
 
 import logging
 import sys
+import os
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from config.config import LOG_LEVEL, LOG_FILE
 
 

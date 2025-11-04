@@ -4,6 +4,11 @@ Command-line interface for the motion detection application
 
 import argparse
 import sys
+import os
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from background_model import create_background_model
 from motion_detector import ContourMotionDetector
 from video_processor import get_video_info, list_available_cameras

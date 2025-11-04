@@ -5,8 +5,14 @@ Alert system for motion detection events
 import json
 import csv
 import time
+import os
+import sys
 from datetime import datetime
 from typing import List, Dict, Any
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from logger import logger
 from config.config import LOG_FILE
 

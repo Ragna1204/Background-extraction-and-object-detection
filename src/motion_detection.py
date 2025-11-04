@@ -3,6 +3,12 @@ Motion detection application using modular classes
 """
 
 import cv2
+import os
+import sys
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from background_model import create_background_model
 from motion_detector import ContourMotionDetector
 from config.config import (

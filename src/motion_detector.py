@@ -5,6 +5,12 @@ Motion detection classes for background subtraction
 import cv2
 import numpy as np
 import time
+import os
+import sys
+
+# Add project root to Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 from logger import logger
 from config.config import (
     FRAME_WIDTH, FRAME_HEIGHT, MOTION_THRESHOLD,
