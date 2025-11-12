@@ -259,3 +259,49 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+# Setup Commands:
+# Activate virtual environment (Windows)
+# venv\Scripts\activate
+
+# Install dependencies
+# pip install -r requirements.txt
+
+# Alternative: Install in development mode
+# python setup.py develop
+
+
+# CLI commands:
+# Capture and display background model
+# python src/cli.py background
+
+# Capture background with custom frames/method
+# python src/cli.py background --frames 100 --method median
+
+# Run motion detection on default camera
+# python src/cli.py detect
+
+# Run motion detection on video file
+# python src/cli.py detect --video testvideo.mp4
+
+# Run motion detection with custom parameters
+# python src/cli.py detect --video testvideo.mp4 --threshold 50 --min-area 1000
+
+# Get video file information
+# python src/cli.py info --video testvideo.mp4
+
+# List available cameras
+# python src/cli.py cameras
+
+# Show recent motion detection alerts
+# python src/cli.py alerts
+
+# Show alerts from last 48 hours
+# python src/cli.py alerts --hours 48
+
+# Export alerts to JSON file
+# python src/cli.py alerts --export alerts.json
+
+# Show motion detection statistics
+# python src/cli.py stats
